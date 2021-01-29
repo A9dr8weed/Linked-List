@@ -35,9 +35,6 @@ namespace Linked_List.Model
         /// Casting an object to a string.
         /// </summary>
         /// <returns> Stored data. </returns>
-        public override string ToString()
-        {
-            return Data.ToString();
-        }
+        public override string ToString() => Data.ToString();
     }
 }
