@@ -7,17 +7,18 @@ namespace Linked_List.Model
     /// <summary>
     /// Single-linked list.
     /// </summary>
+    /// <typeparam name="T"> The type of data stored on the stack. </typeparam>
     public class LinkedList<T> : IEnumerable<T>
     {
         /// <summary>
         /// The first item in the list.
         /// </summary>
-        private Item<T> Head = null;
+        private Item<T> Head;
 
         /// <summary>
         /// The last item in the list.
         /// </summary>
-        private Item<T> Tail = null;
+        private Item<T> Tail;
 
         /// <summary>
         /// Number of items in the list.
@@ -27,18 +28,12 @@ namespace Linked_List.Model
         /// <summary>
         /// Number of items in the list.
         /// </summary>
-        public int Count
-        {
-            get => count;
-        }
+        public int Count => count;
 
         /// <summary>
         /// Create an empty list.
         /// </summary>
-        public LinkedList()
-        {
-            Clear();
-        }
+        public LinkedList() => Clear();
 
         /// <summary>
         /// Add data to the end of the list.
