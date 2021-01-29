@@ -23,7 +23,7 @@ namespace Linked_List.Model
         /// <summary>
         /// Number of items in the list.
         /// </summary>
-        private int count = 0;
+        private int count;
 
         /// <summary>
         /// Number of items in the list.
