@@ -38,9 +38,11 @@ namespace Linked_List.Model
         /// <summary>
         /// Add data to the end of the list.
         /// </summary>
-        /// <param name="data"></param>
+        /// <param name="data"> Added data. </param>
+        /// <exception cref="ArgumentNullException"><paramref name="data"/> is <c>null</c>.</exception>
         public void Add(T data)
         {
+            // Check input data for emptiness.
             if (data == null)
             {
                 throw new ArgumentNullException(nameof(data));
@@ -204,12 +206,9 @@ namespace Linked_List.Model
         /// Return an enumerator that iterates through the linked list.
         /// </summary>
         /// <returns> The IEnumerator used to traverse the collection. </returns>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            // Just return the enumerator defined above.
-            // This is required to implement the IEnumerable interface
-            // to be able to iterate over the elements of the linked list with the foreach operation.
-            return ((IEnumerable)this).GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)this).GetEnumerator();
+        // Just return the enumerator defined above.
+        // This is required to implement the IEnumerable interface
+        // to be able to iterate over the elements of the linked list with the foreach operation.
     }
 }

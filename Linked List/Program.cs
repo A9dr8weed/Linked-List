@@ -19,7 +19,7 @@ namespace Linked_List
 
             list.Delete(17);
 
-            foreach (var item in list)
+            foreach (int item in list)
             {
                 Console.WriteLine(item);
             }
