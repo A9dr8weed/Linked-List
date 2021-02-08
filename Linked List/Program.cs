@@ -19,6 +19,8 @@ namespace Linked_List
 
             list.Delete(17);
 
+            Console.WriteLine(list.Contains(8));
+
             foreach (int item in list)
             {
                 Console.WriteLine(item);

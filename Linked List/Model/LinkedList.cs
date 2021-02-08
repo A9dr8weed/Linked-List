@@ -73,8 +73,10 @@ namespace Linked_List.Model
         /// Delete the first occurrence of data in the list.
         /// </summary>
         /// <param name="data"> Data to be deleted. </param>
+        /// <exception cref="ArgumentNullException"><paramref name="data"/> is <c>null</c>.</exception>
         public void Delete(T data)
         {
+            // Check input data for emptiness.
             if (data == null)
             {
                 throw new ArgumentNullException(nameof(data));
@@ -132,6 +134,34 @@ namespace Linked_List.Model
         }
 
         /// <summary>
+        /// Check for element.
+        /// </summary>
+        /// <param name="data"> Data to be checked </param>
+        /// <returns> String with message </returns>
+        /// <exception cref="ArgumentNullException"><paramref name="data"/> is <c>null</c>.</exception>
+        public string Contains(T data)
+        {
+            // Check input data for emptiness.
+            if (data == null)
+            {
+                throw new ArgumentNullException(nameof(data));
+            }
+
+            Item<T> current = Head;
+
+            while (current != null)
+            {
+                if (current.Data.Equals(data))
+                {
+                    return $"Elements {data} is in the list.";
+                }
+                current = current.Next;
+            }
+
+            return $"Elements {data} is not in the list.";
+        }
+
+        /// <summary>
         /// Add data to the top of the list.
         /// </summary>
         /// <param name="data"></param>
@@ -141,6 +171,11 @@ namespace Linked_List.Model
             {
                 Next = Head
             };
+
+            if (count == 0)
+            {
+                Tail = Head;
+            }
 
             count++;
         }
