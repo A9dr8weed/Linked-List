@@ -25,6 +25,24 @@ namespace Linked_List
             {
                 Console.WriteLine(item);
             }
+
+            CircularLinkedList<int> circularLinkedList = new CircularLinkedList<int>();
+
+            circularLinkedList.Add(100);
+            circularLinkedList.Add(200);
+            circularLinkedList.Add(300);
+            circularLinkedList.Add(400);
+            circularLinkedList.InsertAfter(100, 2);
+            circularLinkedList.AddToHead(0);
+
+            circularLinkedList.Delete(200);
+
+            Console.WriteLine(circularLinkedList.Contains(100));
+
+            foreach (int item in circularLinkedList)
+            {
+                Console.WriteLine(item);
+            }
         }
     }
 }

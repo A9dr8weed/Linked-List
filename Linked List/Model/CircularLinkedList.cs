@@ -4,11 +4,7 @@ using System.Collections.Generic;
 
 namespace Linked_List.Model
 {
-    /// <summary>
-    /// Single-linked list.
-    /// </summary>
-    /// <typeparam name="T"> The type of data stored on the stack. </typeparam>
-    public class LinkedList<T> : IEnumerable<T>
+    public class CircularLinkedList<T> : IEnumerable<T>
     {
         /// <summary>
         /// The first item in the list.
@@ -33,7 +29,7 @@ namespace Linked_List.Model
         /// <summary>
         /// Create an empty list.
         /// </summary>
-        public LinkedList() => Clear();
+        public CircularLinkedList() => Clear();
 
         /// <summary>
         /// Add data to the end of the list.
@@ -48,24 +44,20 @@ namespace Linked_List.Model
                 throw new ArgumentNullException(nameof(data));
             }
 
-            // Create a new linked list item.
             Item<T> item = new Item<T>(data);
 
-            // If the linked list is empty, then add the created element to the beginning,
-            // otherwise add this element as the next one after the outermost element.
             if (Head == null)
             {
                 Head = item;
+                Tail = item;
+                Tail.Next = Head;
             }
             else
             {
+                item.Next = Head;
                 Tail.Next = item;
+                Tail = item;
             }
-
-            // Install this element last.
-            Tail = item;
-
-            // We increase the counter of the number of elements.
             count++;
         }
 
@@ -88,96 +80,39 @@ namespace Linked_List.Model
             // The previous element of the list, before the viewed one.
             Item<T> previous = null;
 
-            // We go through all the elements of the list until it is completed,
-            // or until the element to be removed is found.
-            while (current != null)
+            for (int i = 0; i < count; i++)
             {
-                // If the data of the viewed element matches the deleted data,
-                // then we delete the current element given its position in the chain.
+                // If the node is in the middle or at the end.
                 if (current.Data.Equals(data))
                 {
-                    // If the item is in the middle or at the end of the list, throw the current item out of the list.
-                    // Otherwise, this is the first element of the list, throw out the first item from the list.
                     if (previous != null)
                     {
-                        // Set the previous element's pointer to the next element from the current one.
+                        // remove the current node, now previous refers not to current, but to current.Next
                         previous.Next = current.Next;
 
-                        // If it was the last element of the list, then change the pointer to the outermost element of the list.
-                        if (current.Next == null)
+                        // If the node is last
+                        if (current == Tail)
                         {
+                            // change the tail variable
                             Tail = previous;
                         }
                     }
+                    else if (count == 1) // if there is only one element in the list
+                    {
+                        Head = Tail = null;
+                    }
                     else
                     {
-                        // Set the head element next.
-                        Head = Head.Next;
-
-                        // If the list is empty, then we also zero out the outermost element.
-                        if (Head == null)
-                        {
-                            Tail = null;
-                        }
+                        Head = current.Next;
+                        Tail.Next = current.Next;
                     }
 
-                    // The item has been removed.
-                    // Decrease the number of elements and exit the loop.
                     count--;
-                    break;
                 }
 
-                // Move on to the next item in the list.
                 previous = current;
                 current = current.Next;
             }
-        }
-
-        /// <summary>
-        /// Check for element.
-        /// </summary>
-        /// <param name="data"> Data to be checked </param>
-        /// <returns> String with message </returns>
-        /// <exception cref="ArgumentNullException"><paramref name="data"/> is <c>null</c>.</exception>
-        public string Contains(T data)
-        {
-            // Check input data for emptiness.
-            if (data == null)
-            {
-                throw new ArgumentNullException(nameof(data));
-            }
-
-            Item<T> current = Head;
-
-            while (current != null)
-            {
-                if (current.Data.Equals(data))
-                {
-                    return $"Elements {data} is in the list.";
-                }
-                current = current.Next;
-            }
-
-            return $"Elements {data} is not in the list.";
-        }
-
-        /// <summary>
-        /// Add data to the top of the list.
-        /// </summary>
-        /// <param name="data"></param>
-        public void AddToHead(T data)
-        {
-            Head = new Item<T>(data)
-            {
-                Next = Head
-            };
-
-            if (count == 0)
-            {
-                Tail = Head;
-            }
-
-            count++;
         }
 
         /// <summary>
@@ -185,15 +120,8 @@ namespace Linked_List.Model
         /// </summary>
         /// <param name="target"></param>
         /// <param name="data"></param>
-        /// <exception cref="ArgumentNullException"><paramref name="data"/> is <c>null</c>.</exception>
         public void InsertAfter(T target, T data)
         {
-            // Check input data for emptiness.
-            if (data == null)
-            {
-                throw new ArgumentNullException(nameof(data));
-            }
-
             if (Head != null)
             {
                 Item<T> current = Head;
@@ -219,6 +147,55 @@ namespace Linked_List.Model
         }
 
         /// <summary>
+        /// Add data to the top of the list.
+        /// </summary>
+        /// <param name="data"></param>
+        public void AddToHead(T data)
+        {
+            Item<T> item = new Item<T>(data);
+
+            if (Head == null)
+            {
+                Head = item;
+                Tail = item;
+            }
+
+            item.Next = Head;
+            Tail.Next = item;
+            Head = item;
+
+            count++;
+        }
+
+        /// <summary>
+        /// Check for element.
+        /// </summary>
+        /// <param name="data"> Data to be checked </param>
+        /// <returns> String with message </returns>
+        /// <exception cref="ArgumentNullException"><paramref name="data"/> is <c>null</c>.</exception>
+        public string Contains(T data)
+        {
+            // Check input data for emptiness.
+            if (data == null)
+            {
+                throw new ArgumentNullException(nameof(data));
+            }
+
+            Item<T> current = Head;
+
+            for (int i = 0; i < count; i++)
+            {
+                if (current.Data.Equals(data))
+                {
+                    return $"Elements {data} is in the list.";
+                }
+                current = current.Next;
+            }
+
+            return $"Elements {data} is not in the list.";
+        }
+
+        /// <summary>
         /// Clear list.
         /// </summary>
         public void Clear()
@@ -232,12 +209,11 @@ namespace Linked_List.Model
         /// Return an enumerator that iterates through all the elements in a linked list.
         /// </summary>
         /// <returns> An enumerator that can be used to iterate over the collection. </returns>
-        public IEnumerator<T> GetEnumerator()
+        IEnumerator<T> IEnumerable<T>.GetEnumerator()
         {
-            // We iterate over all the elements of the linked list to be presented as a collection of elements.
             Item<T> current = Head;
 
-            while (current != null)
+            for (int i = 0; i < count; i++)
             {
                 yield return current.Data;
                 current = current.Next;
@@ -249,8 +225,5 @@ namespace Linked_List.Model
         /// </summary>
         /// <returns> The IEnumerator used to traverse the collection. </returns>
         IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)this).GetEnumerator();
-        // Just return the enumerator defined above.
-        // This is required to implement the IEnumerable interface
-        // to be able to iterate over the elements of the linked list with the foreach operation.
     }
 }
